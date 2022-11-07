@@ -1,0 +1,10 @@
+#!/bin/bash
+
+del_grep_folder="""hdfs dfs -rm -r /users/nnvusiri/logs/output/completeGrep"""
+eval $del_grep_folder
+
+hadoop jar /Users/nnvusiri/Downloads/hadoop-streaming-2.6.0.jar \
+-mapper "grep bing" \
+-reducer NONE \
+-input /users/nnvusiri/logs/complete \
+-output /users/nnvusiri/logs/output/completeGrep

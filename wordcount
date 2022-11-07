@@ -1,0 +1,11 @@
+#!/bin/bash
+
+del_wordcount_folder="""hdfs dfs -rm -r /users/nnvusiri/logs/output/completeWordCount"""
+
+eval $del_wordcount_folder
+
+hadoop jar /Users/nnvusiri/Downloads/hadoop-streaming-2.6.0.jar \
+-file /Users/nnvusiri/PycharmProjects/MapReduce/mapper.py -mapper mapper.py \
+-file /Users/nnvusiri/PycharmProjects/MapReduce/reducer.py -reducer reducer.py \
+-input /users/nnvusiri/logs/complete \
+-output /users/nnvusiri/logs/output/completeWordCount

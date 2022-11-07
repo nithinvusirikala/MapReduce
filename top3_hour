@@ -1,0 +1,25 @@
+#!/bin/bash
+
+del_top3_local="""hdfs dfs -rm -r /users/nnvusiri/logs/output/completeCountTop3ParseLocal"""
+del_top3_global="""hdfs dfs -rm -r /users/nnvusiri/logs/output/completeCountTop3ParseGlobal"""
+
+eval $del_top3_local &
+eval $del_top3_global &
+
+
+variable1="""hadoop jar /Users/nnvusiri/Downloads/hadoop-streaming-2.6.0.jar \
+        -file /Users/nnvusiri/PycharmProjects/MapReduce/mapper_ip_hour.py -mapper mapper_ip_hour.py \
+        -file /Users/nnvusiri/PycharmProjects/MapReduce/reducer_ip_hour_parser.py -reducer 'reducer_ip_hour_parser.py $1 $2' \
+        -input /users/nnvusiri/logs/complete \
+        -output /users/nnvusiri/logs/output/completeCountTop3ParseLocal -numReduceTasks 5"""
+
+variable2="""hadoop jar /Users/nnvusiri/Downloads/hadoop-streaming-2.6.0.jar \
+        -file /Users/nnvusiri/PycharmProjects/MapReduce/mapper_identity.py -mapper mapper_identity.py \
+        -file /Users/nnvusiri/PycharmProjects/MapReduce/reducer_final.py -reducer 'reducer_final.py $1 $2' \
+        -input /users/nnvusiri/logs/output/completeCountTop3ParseLocal \
+        -output /users/nnvusiri/logs/output/completeCountTop3ParseGlobal -numReduceTasks 1"""
+
+eval $variable1
+eval $variable2
+
+hdfs dfs -rm -r /users/nnvusiri/logs/output/completeCountTop3ParseLocal

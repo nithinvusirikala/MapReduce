@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source /Users/nnvusiri/PycharmProjects/MapReduce/grep &
+source /Users/nnvusiri/PycharmProjects/MapReduce/top3_hour &
+source /Users/nnvusiri/PycharmProjects/MapReduce/wordcount &
+source /Users/nnvusiri/PycharmProjects/MapReduce/sort
+
+

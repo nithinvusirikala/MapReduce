@@ -1,0 +1,21 @@
+#!/bin/bash
+
+del_sort_local="""hdfs dfs -rm -r /users/nnvusiri/logs/output/completeSortLocal"""
+del_sort_global="""hdfs dfs -rm -r /users/nnvusiri/logs/output/completeSortGlobal"""
+
+eval $del_sort_global &
+eval $del_sort_local
+
+hadoop jar /Users/nnvusiri/Downloads/hadoop-streaming-2.6.0.jar \
+-file /Users/nnvusiri/PycharmProjects/MapReduce/mapper_ip.py -mapper mapper_ip.py \
+-file /Users/nnvusiri/PycharmProjects/MapReduce/reducer_ip.py -reducer reducer_ip.py \
+-input /users/nnvusiri/logs/complete \
+-output /users/nnvusiri/logs/output/completeSortLocal -numReduceTasks 5
+
+hadoop jar /Users/nnvusiri/Downloads/hadoop-streaming-2.6.0.jar \
+-file /Users/nnvusiri/PycharmProjects/MapReduce/mapper_identity.py -mapper mapper_identity.py \
+-file /Users/nnvusiri/PycharmProjects/MapReduce/reducer_ip.py -reducer reducer_ip.py \
+-input /users/nnvusiri/logs/output/completeSortLocal \
+-output /users/nnvusiri/logs/output/completeSortGlobal -numReduceTasks 1
+
+hdfs dfs -rm -r /users/nnvusiri/logs/output/completeSortLocal
